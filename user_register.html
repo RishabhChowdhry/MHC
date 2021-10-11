@@ -1,0 +1,128 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #17a2b8;
+  height: 100vh;
+}
+#login .container #login-row #login-column #login-box {
+  margin-top: 120px;
+  max-width: 600px;
+  height: 500px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+#login .container #login-row #login-column #login-box #login-form {
+  padding: 20px;
+}
+#login .container #login-row #login-column #login-box #login-form #register-link {
+  margin-top: -85px;
+}
+
+</style>
+<body>
+    <div id="login">
+        <h3 class="text-center text-white pt-5">SignUp Page</h3>
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="form" class="form">
+                            <h3 class="text-center text-info">Sign Up</h3>
+                            <div class="form-group">
+                                <label for="username" class="text-info">Name:</label><br>
+                                <input type="text" name="" id="uname" class="form-control">
+                            </div>
+                             <div class="form-group">
+                                <label for="username" class="text-info">Email:</label><br>
+                                <input type="email" name="" id="uemail" class="form-control">
+                                <input type="text" class="form-control" hidden="hidden" placeholder="cnic No" id="regtype" value="User">
+            <input type="text" class="form-control" hidden="hidden" placeholder="cnic No" id="regstatus" value="Pending">
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="username" class="text-info">Cnic:</label><br>
+                                <input type="text" name="" id="ucnic" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text-info">Password:</label><br>
+                                <input type="text" name="" id="upassword" class="form-control" minlength="3" maxlength="8">
+                            </div>
+                            <div class="form-group">
+                                <br>
+                                <button type="submit"  class="btn btn-info btn-md" >Register</button>
+                            </div>
+                            <div id="register-link" class="text-right">
+                              Already Have An Account  <a href="/login" class="text-info">Login here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src=
+    "https://smtpjs.com/v3/smtp.js">
+  </script>
+  
+      <script>
+
+   
+
+
+        $(document).ready(()=>{
+            const form = $("#form");
+            const regname = $("#uname");
+            const regcnic = $("#ucnic");
+            const regpassword = $("#upassword");
+            const regtype = $("#regtype");
+            const regstatus = $("#regstatus");
+            const regemail = $("#uemail");
+            
+
+
+
+            form.submit((e)=>{
+
+                e.preventDefault();
+                fetch('/register',{
+                    
+                    method : 'post',
+                    body : JSON.stringify({username : regname.val(),usercnic : regcnic.val(),userpassword : regpassword.val(),usertype : regtype.val(),userstatus : regstatus.val()}),
+                    headers : {
+                        "Content-Type" : "application/json; charset=utf-8"
+                    }
+
+                }).then((response)=>{
+                    return response.json();
+                }).then((data)=>{
+                    if(!data.error){
+                        if(data.result.ok == 1 && data.result.n == 1){
+                           
+                           alert("User Register Successfully");
+                           window.open("/sendemail/"+regemail.val(),'_self');
+
+                        }
+                    }
+                    else
+                        alert("User Register UnSuccessfully");
+
+                    resetTodosInput();
+                    
+                });
+            });
+
+        });
+    </script>
